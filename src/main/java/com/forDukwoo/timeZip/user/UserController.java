@@ -59,6 +59,33 @@ public class UserController {
         }
     }
 
+    @ResponseBody
+    @GetMapping("/email/{email}")
+    public BaseResponse<String> checkId(@PathVariable ("email") String email) throws BaseException{
+        try {
+            if (userProvider.checkIdExist(email) == 1) {
+                throw new BaseException(BaseResponseStatus.USERS_DUPLICATED_ID);
+            }
+            String result = "중복되지 않은 아이디입니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    @ResponseBody
+    @GetMapping("/nick/{nick}")
+    public BaseResponse<String> checkNick(@PathVariable ("nick") String nick) throws BaseException{
+        try {
+            if (userProvider.checkNickExist(nick) == 1) {
+                throw new BaseException(BaseResponseStatus.USERS_DUPLICATED_NICK);
+            }
+            String result = "중복되지 않은 닉네임입니다.";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 
 }
