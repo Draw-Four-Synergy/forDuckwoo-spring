@@ -3,6 +3,7 @@ package com.forDukwoo.timeZip.user;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.config.BaseResponse;
 import com.forDukwoo.timeZip.config.BaseResponseStatus;
+import com.forDukwoo.timeZip.user.model.GetMyPageRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
 import com.forDukwoo.timeZip.user.model.PostUserReq;
 import com.forDukwoo.timeZip.user.model.PostUserRes;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
 
-    // 사용자 정보 확인
+    // 사용자 정보 확인 - myPage 에서 사용
     @ResponseBody
     @GetMapping("")
     public BaseResponse<GetUserInfoRes> getUser() {
@@ -86,6 +87,5 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
-
 
 }

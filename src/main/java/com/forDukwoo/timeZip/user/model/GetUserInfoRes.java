@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetUserInfoRes {
+    String photo;
     String nickName;
 }

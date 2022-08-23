@@ -37,10 +37,11 @@ public class UserDao {
 
     public GetUserInfoRes selectUser(long userId) {
         String selectUserQuery = "\n" +
-                "select nick from user where user_id = ?";
+                "select photo, nick from user where user_id = ?";
         long selectUserParam = userId;
         return this.jdbcTemplate.queryForObject(selectUserQuery,
                 (rs, rowNum) -> new GetUserInfoRes(
+                        rs.getString("photo"),
                         rs.getString("nick")
                 ), selectUserParam);
     }
