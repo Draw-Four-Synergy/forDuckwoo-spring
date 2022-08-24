@@ -3,7 +3,7 @@ package com.forDukwoo.timeZip.user;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.config.BaseResponse;
 import com.forDukwoo.timeZip.config.BaseResponseStatus;
-import com.forDukwoo.timeZip.user.model.GetMyPageRes;
+import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
 import com.forDukwoo.timeZip.user.model.PostUserReq;
 import com.forDukwoo.timeZip.user.model.PostUserRes;
@@ -11,6 +11,8 @@ import com.forDukwoo.timeZip.utils.JwtService;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -88,4 +90,32 @@ public class UserController {
         }
     }
 
+    // 스크랩 리스트 반환 (카테고리별)
+    @ResponseBody
+    @GetMapping("scrap/{category}")
+    public BaseResponse<List<GetScrapRes>> getScrapNews (@PathVariable ("category") String category) throws BaseException {
+        try {
+            int userIdByJwt = (int) jwtService.getUserId();
+            List<GetScrapRes> getScrapRes = userProvider.retrieveScrap(userIdByJwt, category);
+            return new BaseResponse<>(getScrapRes);
+        }catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+
+    }
+
+    // 스크랩 삭제
+    @ResponseBody
+    @DeleteMapping("/scrap/{scrapId}")
+    public BaseResponse<String> deleteUserScrap (@PathVariable("scrapId") int scrapId) {
+        try{
+            int userIdByJwt = (int) jwtService.getUserId();
+//            DeleteInterestReq deleteInterestReq = new DeleteInterestReq(userIdByJwt);
+            userService.deleteScrap(userIdByJwt, scrapId);
+            String result = "스크랩을 삭제했습니다.";
+            return new BaseResponse<>(result);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

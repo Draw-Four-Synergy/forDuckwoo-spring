@@ -1,13 +1,17 @@
 package com.forDukwoo.timeZip.user;
 
 import com.forDukwoo.timeZip.config.BaseException;
+import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.forDukwoo.timeZip.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.forDukwoo.timeZip.config.BaseResponseStatus.POSTS_EMPTY_CATEGORY_ID;
 
 @Service
 public class UserProvider {
@@ -42,6 +46,44 @@ public class UserProvider {
             return getUserInfoRes;
         } catch (Exception exception) {
             exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetScrapRes> retrieveScrap(int userId, String category) throws BaseException {
+        try {
+            if(category.equals("news")) {
+                List<GetScrapRes> getScrapRes = userDao.getScrapNews(userId);
+                return getScrapRes;
+            }
+            else if(category.equals("en_news")) {
+                List<GetScrapRes> getScrapRes = userDao.getScrapEnNews(userId);
+                return getScrapRes;
+            }
+            else if (category.equals("audio")) {
+                List<GetScrapRes> getScrapRes = userDao.getScrapAudio(userId);
+                return getScrapRes;
+            }
+            throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkScrapIdExist(int scrapId) throws BaseException {
+        try {
+            return userDao.checkScrapIdExist(scrapId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+    public int checkDuplicateScrap(int scrapId, int userId) throws BaseException{
+        try {
+            return userDao.checkDuplicateScrap(scrapId, userId);
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }

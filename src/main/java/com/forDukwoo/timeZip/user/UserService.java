@@ -1,6 +1,7 @@
 package com.forDukwoo.timeZip.user;
 
 import com.forDukwoo.timeZip.config.BaseException;
+import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.user.model.PostUserReq;
 import com.forDukwoo.timeZip.user.model.PostUserRes;
 import com.forDukwoo.timeZip.utils.JwtService;
@@ -9,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.forDukwoo.timeZip.config.BaseResponseStatus.*;
 
@@ -51,4 +54,22 @@ public class UserService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void deleteScrap(int userId, int scrapId) throws BaseException{
+        // scrapId 가 존재하지 않는 경우
+        if(userProvider.checkScrapIdExist(scrapId) == 0) {
+            throw new BaseException(POSTS_EMPTY_POST_ID);
+        }
+        // scrapId userId의 쌍이 존재하지 않는 경우
+        if(userProvider.checkDuplicateScrap(scrapId, userId) == 0) {
+            throw new BaseException(EMPTY_SCRAP);
+        }
+        try {
+            userDao.deleteScrap(userId, scrapId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
 }

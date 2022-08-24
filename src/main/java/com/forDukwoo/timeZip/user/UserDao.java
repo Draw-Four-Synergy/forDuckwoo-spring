@@ -1,5 +1,6 @@
 package com.forDukwoo.timeZip.user;
 
+import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
 import com.forDukwoo.timeZip.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class UserDao {
@@ -54,5 +56,70 @@ public class UserDao {
         int userIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
         return userIdx;
     }
+
+    // 스크랩 리스트 출력
+    public List<GetScrapRes> getScrapNews (int userId) {
+        String getScrapNewsQuery = "select scrap_id as scrapId, title, left(content, 30) as content\n" +
+                "from scrap, news\n" +
+                "where scrap.news_id = news.news_id and user_id = ?";
+        int getScrapNewsParam = userId;
+        return this.jdbcTemplate.query(getScrapNewsQuery,
+                (rs, rowNum) -> new GetScrapRes(
+                        rs.getInt("scrapId"),
+                        rs.getString("title"),
+                        rs.getString("content")
+                ),getScrapNewsParam);
+    }
+
+    public List<GetScrapRes> getScrapEnNews (int userId) {
+        String getScrapNewsQuery = "select scrap_id as scrapId, title, left(content, 30) as content\n" +
+                "                from scrap, en_news\n" +
+                "                where scrap.en_news_id = en_news.en_news_id and user_id = ?;";
+        int getScrapEnNewsParam = userId;
+        return this.jdbcTemplate.query(getScrapNewsQuery,
+                (rs, rowNum) -> new GetScrapRes(
+                        rs.getInt("scrapId"),
+                        rs.getString("title"),
+                        rs.getString("content")
+                ),getScrapEnNewsParam);
+    }
+
+    public List<GetScrapRes> getScrapAudio (int userId) {
+        String getScrapNewsQuery = "select scrap_id as scrapId, title, left(content, 30) as content\n" +
+                "from scrap, audio\n" +
+                "where scrap.audio_id = audio.audio_id and user_id = ?";
+        int getScrapAudioParam = userId;
+        return this.jdbcTemplate.query(getScrapNewsQuery,
+                (rs, rowNum) -> new GetScrapRes(
+                        rs.getInt("scrapId"),
+                        rs.getString("title"),
+                        rs.getString("content")
+                ), getScrapAudioParam);
+    }
+
+
+    public int checkScrapIdExist(int scrapId) {
+        String checkScrapIdExistQuery = "select exists(select scrap_id from scrap where scrap_id = ?)";
+        long checkScrapIdExistParams = scrapId;
+        return this.jdbcTemplate.queryForObject(checkScrapIdExistQuery,
+                int.class,
+                checkScrapIdExistParams);
+    }
+
+    public int checkDuplicateScrap(int scrapId, int userId) {
+        String checkDuplicateScrapQuery = "select exists(select scrap_id, user_id from scrap where scrap_id = ? and user_id = ?)";
+        int checkDuplicateScrapParams1 = scrapId;
+        int checkDuplicateScrapParams2 = userId;
+        return this.jdbcTemplate.queryForObject(checkDuplicateScrapQuery, int.class, checkDuplicateScrapParams1, checkDuplicateScrapParams2);
+
+    }
+
+    public int deleteScrap(int userId, int scrapId) {
+        String deleteScrapQuery = "delete from scrap where user_id = ? and scrap_id = ?";
+        Object[] deleteScrapParams = new Object[]{userId, scrapId};
+        return this.jdbcTemplate.update(deleteScrapQuery,
+                deleteScrapParams);
+    }
+
 
 }
