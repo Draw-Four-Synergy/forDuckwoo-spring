@@ -46,4 +46,34 @@ public class ContentDao {
                         rs.getInt("scrap")
                 ));
     }
+
+    public List<GetContentRes> getNews() {
+        String getInterestNewsQuery = "select title, view, scrap from news order by news_id desc";
+        return this.jdbcTemplate.query(getInterestNewsQuery,
+                (rs, rowNum) -> new GetContentRes(
+                        rs.getString("title"),
+                        rs.getInt("view"),
+                        rs.getInt("scrap")
+                ));
+    }
+
+    public List<GetContentRes> getEnNews() {
+        String getInterestNewsQuery = "select title, view, scrap from en_news order by en_news_id desc";
+        return this.jdbcTemplate.query(getInterestNewsQuery,
+                (rs, rowNum) -> new GetContentRes(
+                        rs.getString("title"),
+                        rs.getInt("view"),
+                        rs.getInt("scrap")
+                ));
+    }
+
+    public List<GetContentRes> getAudio() {
+        String getInterestNewsQuery = "select title, view, scrap from audio order by audio_id desc";
+        return this.jdbcTemplate.query(getInterestNewsQuery,
+                (rs, rowNum) -> new GetContentRes(
+                        rs.getString("title"),
+                        rs.getInt("view"),
+                        rs.getInt("scrap")
+                ));
+    }
 }

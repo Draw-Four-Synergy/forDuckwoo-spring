@@ -37,4 +37,17 @@ public class ContentController {
         }
     }
 
+    // 최신순 나열
+    @ResponseBody
+    @GetMapping("/{category}")
+    public BaseResponse<List<GetContentRes>> getContent (@PathVariable ("category") String category) throws BaseException {
+        try {
+            List<GetContentRes> getContentRes = contentProvider.retrieveContentRecent(category);
+            return new BaseResponse<>(getContentRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
 }

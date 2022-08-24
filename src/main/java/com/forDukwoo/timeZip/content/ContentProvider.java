@@ -45,4 +45,25 @@ public class ContentProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<GetContentRes> retrieveContentRecent(String category) throws BaseException {
+        try {
+            if(category.equals("news")) {
+                List<GetContentRes> getContentRes  = contentDao.getNews();
+                return getContentRes;
+            }
+            else if(category.equals("en_news")) {
+                List<GetContentRes> getContentRes  = contentDao.getEnNews();
+                return getContentRes;
+            }
+            else if (category.equals("audio")) {
+                List<GetContentRes> getContentRes  = contentDao.getAudio();
+                return getContentRes;
+            }
+            throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
