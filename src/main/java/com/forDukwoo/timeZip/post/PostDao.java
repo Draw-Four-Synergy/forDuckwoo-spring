@@ -1,5 +1,6 @@
 package com.forDukwoo.timeZip.post;
 
+import com.forDukwoo.timeZip.post.model.GetPostDetailRes;
 import com.forDukwoo.timeZip.post.model.GetPostRes;
 import com.forDukwoo.timeZip.post.model.PostPostReq;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class PostDao {
     }
 
     public List<GetPostRes> selectPosts() {
-        String selectPostsQuery = "select community_id, photo, nick, content from community, user\n" +
+        String selectPostsQuery = "select community_id, photo, nick, left(content, 20) from community, user\n" +
                 "where user.user_id = community.user_id\n" +
                 "order by community_id desc";
 
@@ -42,7 +43,7 @@ public class PostDao {
     }
 
     public List<GetPostRes> selectPostsHashtag(int hashtag) {
-        String selectPostsQuery = "select community_id, photo, nick, content from community, user\n" +
+        String selectPostsQuery = "select community_id, photo, nick, left(content, 20) from community, user\n" +
                 "where user.user_id = community.user_id and hashtag = ?\n" +
                 "order by community_id desc;";
         int selectPostsParam = hashtag;
@@ -54,5 +55,27 @@ public class PostDao {
                         rs.getString("nick"),
                         rs.getString("content")
                 ), selectPostsParam);
+    }
+
+    public GetPostDetailRes selectPostDetails(int community_id) {
+        String selectPostDetailsQuery = "select photo, nick, content from community, user\n" +
+                "where user.user_id = community.user_id and community_id = ?";
+        int selectPostDetailsParam = community_id;
+
+        return this.jdbcTemplate.queryForObject(selectPostDetailsQuery,
+                (rs, rowNum) -> new GetPostDetailRes(
+                        rs.getString("photo"),
+                        rs.getString("nick"),
+                        rs.getString("content")
+                ), selectPostDetailsParam);
+    }
+
+    public int checkCommunityIdExist(long communityId) {
+        String checkCommunityIdExistQuery = "select exists(select community_id from community where community_id = ?)";
+        long checkCommunityIdExistParams = communityId;
+        return this.jdbcTemplate.queryForObject(checkCommunityIdExistQuery,
+                int.class,
+                checkCommunityIdExistParams);
+
     }
 }

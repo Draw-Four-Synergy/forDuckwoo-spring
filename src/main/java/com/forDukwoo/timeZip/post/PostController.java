@@ -3,6 +3,7 @@ package com.forDukwoo.timeZip.post;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.config.BaseResponse;
 import com.forDukwoo.timeZip.config.BaseResponseStatus;
+import com.forDukwoo.timeZip.post.model.GetPostDetailRes;
 import com.forDukwoo.timeZip.post.model.GetPostRes;
 import com.forDukwoo.timeZip.post.model.PostPostReq;
 import com.forDukwoo.timeZip.post.model.PostPostRes;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.forDukwoo.timeZip.config.BaseResponseStatus.POSTS_EMPTY_POST_ID;
 
 @RestController
 @RequestMapping("/posts")
@@ -56,6 +59,21 @@ public class PostController {
         try {
             List<GetPostRes> getPostRes = postProvider.retrievePosts(hashtag);
             return new BaseResponse<>(getPostRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // 게시물 상세페이지
+    @ResponseBody
+    @GetMapping("detail/{communityId}")
+    public BaseResponse<GetPostDetailRes> postPostsDetail(@PathVariable("communityId") int communityId) {
+        try {
+            if(postProvider.checkIdExist(communityId) == 0) {
+                throw new BaseException(POSTS_EMPTY_POST_ID);
+            }
+            GetPostDetailRes getPostDetailRes = postProvider.retrievePostDetails(communityId);
+            return new BaseResponse<>(getPostDetailRes);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }

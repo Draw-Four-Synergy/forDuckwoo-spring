@@ -1,6 +1,8 @@
 package com.forDukwoo.timeZip.post;
 
+import com.forDukwoo.timeZip.TimeZipApplication;
 import com.forDukwoo.timeZip.config.BaseException;
+import com.forDukwoo.timeZip.post.model.GetPostDetailRes;
 import com.forDukwoo.timeZip.post.model.GetPostRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.forDukwoo.timeZip.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.forDukwoo.timeZip.config.BaseResponseStatus.POSTS_EMPTY_POST_ID;
 
 @Service
 public class PostProvider {
@@ -37,4 +40,20 @@ public class PostProvider {
         }
     }
 
+    public GetPostDetailRes retrievePostDetails(int community_id) throws BaseException{
+        try {
+            GetPostDetailRes getPostDetailRes = postDao.selectPostDetails(community_id);
+            return getPostDetailRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkIdExist(int id) throws BaseException{
+        try {
+            return postDao.checkCommunityIdExist(id);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
