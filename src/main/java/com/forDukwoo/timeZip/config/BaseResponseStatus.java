@@ -35,7 +35,7 @@ public enum BaseResponseStatus {
 
 
     // posts
-    POSTS_EMPTY_CATEGORY_ID(false, 2012, "카테고리 아이디 값을 확인해주세요."),
+    POSTS_EMPTY_CATEGORY_ID(false, 2012, "카테고리 값을 확인해주세요."),
     POSTS_FAILED_UPLOAD(false,2013,"게시물 등록에 실패했습니다."),
     POST_INPUT_FAILED_DEADLINE(false,2014,"제출기한을 잘못 입력하였습니다"),
 
