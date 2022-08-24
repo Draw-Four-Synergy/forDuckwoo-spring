@@ -7,9 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetContentRes {
-    int id;
+public class GetContentDetailRes {
     String title;
-    int view;
-    int scrap;
+    String content;
+    int smile;
+    int cry;
+    int angry;
 }

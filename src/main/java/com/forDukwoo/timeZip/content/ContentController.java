@@ -2,6 +2,8 @@ package com.forDukwoo.timeZip.content;
 
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.config.BaseResponse;
+import com.forDukwoo.timeZip.config.BaseResponseStatus;
+import com.forDukwoo.timeZip.content.model.GetContentDetailRes;
 import com.forDukwoo.timeZip.content.model.GetContentRes;
 import com.forDukwoo.timeZip.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,39 @@ public class ContentController {
         try {
             List<GetContentRes> getContentRes = contentProvider.retrieveContent(category);
             return new BaseResponse<>(getContentRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // 최신순 나열
+    @ResponseBody
+    @GetMapping("/{category}")
+    public BaseResponse<List<GetContentRes>> getContent (@PathVariable ("category") String category) throws BaseException {
+        try {
+            List<GetContentRes> getContentRes = contentProvider.retrieveContentRecent(category);
+            return new BaseResponse<>(getContentRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // 본문 출력
+    @ResponseBody
+    @GetMapping("/{category}/{id}")
+    public BaseResponse<GetContentDetailRes> getContentDetail (@PathVariable ("category") String category, @PathVariable("id") int id) throws BaseException {
+        try {
+            if(contentProvider.checkNewsId(id) == 0) {
+                throw new BaseException(BaseResponseStatus.POSTS_EMPTY_POST_ID);
+            }
+            if(contentProvider.checkEnNewsId(id) == 0) {
+                throw new BaseException(BaseResponseStatus.POSTS_EMPTY_POST_ID);
+            }
+            if(contentProvider.checkAudioId(id) == 0) {
+                throw new BaseException(BaseResponseStatus.POSTS_EMPTY_POST_ID);
+            }
+            GetContentDetailRes getContentDetailRes = contentProvider.retrieveContentDetail(category, id);
+            return new BaseResponse<>(getContentDetailRes);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
