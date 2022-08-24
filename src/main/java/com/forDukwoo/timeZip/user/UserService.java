@@ -55,4 +55,21 @@ public class UserService {
         }
     }
 
+    public void deleteScrap(int userId, int scrapId) throws BaseException{
+        // scrapId 가 존재하지 않는 경우
+        if(userProvider.checkScrapIdExist(scrapId) == 0) {
+            throw new BaseException(POSTS_EMPTY_POST_ID);
+        }
+        // scrapId userId의 쌍이 존재하지 않는 경우
+        if(userProvider.checkDuplicateScrap(scrapId, userId) == 0) {
+            throw new BaseException(EMPTY_SCRAP);
+        }
+        try {
+            userDao.deleteScrap(userId, scrapId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
 }

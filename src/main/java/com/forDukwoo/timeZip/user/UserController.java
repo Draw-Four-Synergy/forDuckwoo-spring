@@ -90,7 +90,7 @@ public class UserController {
         }
     }
 
-    // 북마크 리스트 반환 - 뉴스레터
+    // 스크랩 리스트 반환 (카테고리별)
     @ResponseBody
     @GetMapping("scrap/{category}")
     public BaseResponse<List<GetScrapRes>> getScrapNews (@PathVariable ("category") String category) throws BaseException {
@@ -102,5 +102,20 @@ public class UserController {
             return new BaseResponse<>(exception.getStatus());
         }
 
+    }
+
+    // 스크랩 삭제
+    @ResponseBody
+    @DeleteMapping("/scrap/{scrapId}")
+    public BaseResponse<String> deleteUserScrap (@PathVariable("scrapId") int scrapId) {
+        try{
+            int userIdByJwt = (int) jwtService.getUserId();
+//            DeleteInterestReq deleteInterestReq = new DeleteInterestReq(userIdByJwt);
+            userService.deleteScrap(userIdByJwt, scrapId);
+            String result = "스크랩을 삭제했습니다.";
+            return new BaseResponse<>(result);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 }

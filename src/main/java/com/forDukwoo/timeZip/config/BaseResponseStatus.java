@@ -32,6 +32,7 @@ public enum BaseResponseStatus {
     USERS_FAILED_POST_ID(false, 2060, "해당 포스트를 작성한 유저가 아닙니다."),
     USERS_DUPLICATED_ID(false, 2061, "중복된 아이디입니다."),
     USERS_DUPLICATED_NICK(false, 2062, "중복된 닉네임입니다."),
+    EMPTY_SCRAP(false, 2063, "해당 유저가 등록하지 않은 스크랩입니다."),
 
 
     // posts

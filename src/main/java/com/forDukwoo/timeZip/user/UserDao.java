@@ -98,4 +98,28 @@ public class UserDao {
     }
 
 
+    public int checkScrapIdExist(int scrapId) {
+        String checkScrapIdExistQuery = "select exists(select scrap_id from scrap where scrap_id = ?)";
+        long checkScrapIdExistParams = scrapId;
+        return this.jdbcTemplate.queryForObject(checkScrapIdExistQuery,
+                int.class,
+                checkScrapIdExistParams);
+    }
+
+    public int checkDuplicateScrap(int scrapId, int userId) {
+        String checkDuplicateScrapQuery = "select exists(select scrap_id, user_id from scrap where scrap_id = ? and user_id = ?)";
+        int checkDuplicateScrapParams1 = scrapId;
+        int checkDuplicateScrapParams2 = userId;
+        return this.jdbcTemplate.queryForObject(checkDuplicateScrapQuery, int.class, checkDuplicateScrapParams1, checkDuplicateScrapParams2);
+
+    }
+
+    public int deleteScrap(int userId, int scrapId) {
+        String deleteScrapQuery = "delete from scrap where user_id = ? and scrap_id = ?";
+        Object[] deleteScrapParams = new Object[]{userId, scrapId};
+        return this.jdbcTemplate.update(deleteScrapQuery,
+                deleteScrapParams);
+    }
+
+
 }

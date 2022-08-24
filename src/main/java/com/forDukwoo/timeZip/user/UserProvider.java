@@ -71,4 +71,21 @@ public class UserProvider {
         }
     }
 
+    public int checkScrapIdExist(int scrapId) throws BaseException {
+        try {
+            return userDao.checkScrapIdExist(scrapId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+    public int checkDuplicateScrap(int scrapId, int userId) throws BaseException{
+        try {
+            return userDao.checkDuplicateScrap(scrapId, userId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
