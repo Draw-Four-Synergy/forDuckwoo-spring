@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetContentRes {
+    int id;
     String title;
     int view;
     int scrap;

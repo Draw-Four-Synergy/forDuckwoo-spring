@@ -20,9 +20,10 @@ public class ContentDao {
     }
 
     public List<GetContentRes> getInterestNews() {
-        String getInterestNewsQuery = "select title, view, scrap from news order by view desc";
+        String getInterestNewsQuery = "select news_id as id, title, view, scrap from news order by view desc";
         return this.jdbcTemplate.query(getInterestNewsQuery,
                 (rs, rowNum) -> new GetContentRes(
+                        rs.getInt("id"),
                         rs.getString("title"),
                         rs.getInt("view"),
                         rs.getInt("scrap")
@@ -30,9 +31,10 @@ public class ContentDao {
     }
 
     public List<GetContentRes> getInterestEnNews() {
-        String getInterestNewsQuery = "select title, view, scrap from en_news order by view desc";
+        String getInterestNewsQuery = "select en_news_id as id, title, view, scrap from en_news order by view desc";
         return this.jdbcTemplate.query(getInterestNewsQuery,
                 (rs, rowNum) -> new GetContentRes(
+                        rs.getInt("id"),
                         rs.getString("title"),
                         rs.getInt("view"),
                         rs.getInt("scrap")
@@ -40,9 +42,10 @@ public class ContentDao {
     }
 
     public List<GetContentRes> getInterestAudio() {
-        String getInterestNewsQuery = "select title, view, scrap from audio order by view desc";
+        String getInterestNewsQuery = "select audio_id as id, title, view, scrap from audio order by view desc";
         return this.jdbcTemplate.query(getInterestNewsQuery,
                 (rs, rowNum) -> new GetContentRes(
+                        rs.getInt("id"),
                         rs.getString("title"),
                         rs.getInt("view"),
                         rs.getInt("scrap")
@@ -50,9 +53,10 @@ public class ContentDao {
     }
 
     public List<GetContentRes> getNews() {
-        String getInterestNewsQuery = "select title, view, scrap from news order by news_id desc";
+        String getInterestNewsQuery = "select news_id as id, title, view, scrap from news order by news_id desc";
         return this.jdbcTemplate.query(getInterestNewsQuery,
                 (rs, rowNum) -> new GetContentRes(
+                        rs.getInt("id"),
                         rs.getString("title"),
                         rs.getInt("view"),
                         rs.getInt("scrap")
@@ -60,9 +64,10 @@ public class ContentDao {
     }
 
     public List<GetContentRes> getEnNews() {
-        String getInterestNewsQuery = "select title, view, scrap from en_news order by en_news_id desc";
+        String getInterestNewsQuery = "select en_news_id as id, title, view, scrap from en_news order by en_news_id desc";
         return this.jdbcTemplate.query(getInterestNewsQuery,
                 (rs, rowNum) -> new GetContentRes(
+                        rs.getInt("id"),
                         rs.getString("title"),
                         rs.getInt("view"),
                         rs.getInt("scrap")
@@ -70,9 +75,10 @@ public class ContentDao {
     }
 
     public List<GetContentRes> getAudio() {
-        String getInterestNewsQuery = "select title, view, scrap from audio order by audio_id desc";
+        String getInterestNewsQuery = "select audio_id as id, title, view, scrap from audio order by audio_id desc";
         return this.jdbcTemplate.query(getInterestNewsQuery,
                 (rs, rowNum) -> new GetContentRes(
+                        rs.getInt("id"),
                         rs.getString("title"),
                         rs.getInt("view"),
                         rs.getInt("scrap")
