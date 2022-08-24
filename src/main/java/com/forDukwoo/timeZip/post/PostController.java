@@ -3,11 +3,14 @@ package com.forDukwoo.timeZip.post;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.config.BaseResponse;
 import com.forDukwoo.timeZip.config.BaseResponseStatus;
+import com.forDukwoo.timeZip.post.model.GetPostRes;
 import com.forDukwoo.timeZip.post.model.PostPostReq;
 import com.forDukwoo.timeZip.post.model.PostPostRes;
 import com.forDukwoo.timeZip.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
@@ -43,6 +46,18 @@ public class PostController {
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 게시물 조회
+    @ResponseBody
+    @GetMapping("/{hashtag}")
+    public BaseResponse<List<GetPostRes>> postPosts(@PathVariable("hashtag") int hashtag) {
+        try {
+            List<GetPostRes> getPostRes = postProvider.retrievePosts(hashtag);
+            return new BaseResponse<>(getPostRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 }
