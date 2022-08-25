@@ -2,6 +2,7 @@ package com.forDukwoo.timeZip.content;
 
 import com.forDukwoo.timeZip.content.model.GetContentDetailRes;
 import com.forDukwoo.timeZip.content.model.GetContentRes;
+import com.forDukwoo.timeZip.content.model.GetEmoticonRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -236,5 +237,47 @@ public class ContentDao {
                 "(select emoticon_id from audio where audio_id = ?)";
         int updateAudioAngryParams = id;
         this.jdbcTemplate.update(updateAudioAngryQuery, updateAudioAngryParams);
+    }
+
+    public GetEmoticonRes getNewsEmoticon(int id) {
+        String GetEmoticonResQuery = "select smile, cry, angry\n" +
+                "from emoticon, news\n" +
+                "where news.emoticon_id = emoticon.emoticon_id\n" +
+                "and news_id = ?";
+        long GetEmoticonResParam = id;
+        return this.jdbcTemplate.queryForObject(GetEmoticonResQuery,
+                (rs, rowNum) -> new GetEmoticonRes(
+                        rs.getInt("smile"),
+                        rs.getInt("cry"),
+                        rs.getInt("angry")
+                ), GetEmoticonResParam);
+    }
+
+    public GetEmoticonRes getEnNewsEmoticon(int id) {
+        String getEnNewsEmoticonQuery = "select smile, cry, angry\n" +
+                "from emoticon, en_news\n" +
+                "where en_news.emoticon_id = emoticon.emoticon_id\n" +
+                "and en_news_id = ?";
+        long getEnNewsEmoticonParam = id;
+        return this.jdbcTemplate.queryForObject(getEnNewsEmoticonQuery,
+                (rs, rowNum) -> new GetEmoticonRes(
+                        rs.getInt("smile"),
+                        rs.getInt("cry"),
+                        rs.getInt("angry")
+                ), getEnNewsEmoticonParam);
+    }
+
+    public GetEmoticonRes getAudioEmoticon(int id) {
+        String getAudioEmoticonQuery = "select smile, cry, angry\n" +
+                "from emoticon, audio\n" +
+                "where audio.emoticon_id = emoticon.emoticon_id\n" +
+                "and audio_id = ?";
+        long getAudioEmoticonParam = id;
+        return this.jdbcTemplate.queryForObject(getAudioEmoticonQuery,
+                (rs, rowNum) -> new GetEmoticonRes(
+                        rs.getInt("smile"),
+                        rs.getInt("cry"),
+                        rs.getInt("angry")
+                ), getAudioEmoticonParam);
     }
 }

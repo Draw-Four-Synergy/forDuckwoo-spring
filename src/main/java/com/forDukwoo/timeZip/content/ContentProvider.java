@@ -3,6 +3,7 @@ package com.forDukwoo.timeZip.content;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.content.model.GetContentDetailRes;
 import com.forDukwoo.timeZip.content.model.GetContentRes;
+import com.forDukwoo.timeZip.content.model.GetEmoticonRes;
 import com.forDukwoo.timeZip.user.UserDao;
 import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import org.slf4j.Logger;
@@ -177,6 +178,27 @@ public class ContentProvider {
                         break;
                 }
                 return;
+            }
+            throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public GetEmoticonRes retrieveEmoticon(String category, int id) throws BaseException{
+        try {
+            if(category.equals("news")) {
+                GetEmoticonRes getEmoticonRes  = contentDao.getNewsEmoticon(id);
+                return getEmoticonRes;
+            }
+            else if(category.equals("en_news")) {
+                GetEmoticonRes getEmoticonRes  = contentDao.getEnNewsEmoticon(id);
+                return getEmoticonRes;
+            }
+            else if (category.equals("audio")) {
+                GetEmoticonRes getEmoticonRes  = contentDao.getAudioEmoticon(id);
+                return getEmoticonRes;
             }
             throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
         } catch (Exception exception) {
