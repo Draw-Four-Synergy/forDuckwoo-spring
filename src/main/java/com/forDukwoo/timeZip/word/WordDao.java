@@ -1,6 +1,5 @@
 package com.forDukwoo.timeZip.word;
 
-import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.word.model.GetWordRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,5 +30,27 @@ public class WordDao {
                         rs.getString("meaning1"),
                         rs.getString("meaning1")
                 ), selectWordParam);
+    }
+
+    public void deleteWord(int userId, int dictionaryId) {
+        String deleteWordQuery = "delete from dictionary where user_id = ? and dictionary_id = ?";
+        Object[] deleteWordParams = new Object[]{userId, dictionaryId};
+        this.jdbcTemplate.update(deleteWordQuery, deleteWordParams);
+    }
+
+    public int checkDictionaryIdExist(int dictionaryId) {
+        String checkDictionaryIdExistQuery = "select exists(select dictionary_id as dictionaryId from dictionary where dictionary_id = ?)";
+        long checkDictionaryIdExistParams = dictionaryId;
+        return this.jdbcTemplate.queryForObject(checkDictionaryIdExistQuery,
+                int.class,
+                checkDictionaryIdExistParams);
+    }
+
+    public int checkDuplicateWord(int dictionaryId, int userId) {
+        String checkDuplicateWordQuery = "select exists(select dictionary_id as dictionaryId, user_id from dictionary where dictionary_id = ? and user_id = ?)";
+        int checkDuplicateWordParams1 = dictionaryId;
+        int checkDuplicateWordParams2 = userId;
+        return this.jdbcTemplate.queryForObject(checkDuplicateWordQuery, int.class, checkDuplicateWordParams1, checkDuplicateWordParams2);
+
     }
 }
