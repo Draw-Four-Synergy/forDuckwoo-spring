@@ -36,9 +36,6 @@ public class PostController {
             int userIdByJwt = (int) jwtService.getUserId();
             postPostReq.setUserId(userIdByJwt);
 
-            if (postPostReq.getTitle().length() > 30)
-                return new BaseResponse<>(BaseResponseStatus.POST_INPUT_FAILED_TITLE);
-
             if (postPostReq.getContent().length() > 2000)
                 return new BaseResponse<>(BaseResponseStatus.POST_INPUT_FAILED_CONTENTS);
 
