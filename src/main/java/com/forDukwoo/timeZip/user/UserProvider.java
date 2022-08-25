@@ -1,8 +1,10 @@
 package com.forDukwoo.timeZip.user;
 
 import com.forDukwoo.timeZip.config.BaseException;
+import com.forDukwoo.timeZip.user.model.GetBadgeRes;
 import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
+import com.forDukwoo.timeZip.user.model.GetWordRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,4 +90,29 @@ public class UserProvider {
         }
     }
 
+    public List<GetWordRes> retrieveWord(long userId, int enNewsId) throws BaseException{
+        try {
+                List<GetWordRes> getWordRes = userDao.getWord(userId, enNewsId);
+                return getWordRes;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public int checkEnNewsIdExist(int enNewsId) throws BaseException{
+        try {
+            return userDao.checkEnNewsIdExist(enNewsId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetBadgeRes> retrieveBadge(int userId) throws BaseException{
+        try {
+            return userDao.getBadge(userId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
