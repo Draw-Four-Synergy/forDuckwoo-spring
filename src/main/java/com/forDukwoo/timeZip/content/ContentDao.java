@@ -174,4 +174,67 @@ public class ContentDao {
         Object[] createScrapNewsParams = new Object[]{userId, audio_id};
         this.jdbcTemplate.update(createScrapNewsQuery, createScrapNewsParams);
     }
+
+    public void updateNewsSmile(int id) {
+        String updateNewsSmileQuery = "update emoticon set smile = smile + 1 where emoticon_id =\n" +
+                "(select emoticon_id from news where news_id = ?)";
+        int updateNewsSmileParams = id;
+        this.jdbcTemplate.update(updateNewsSmileQuery, updateNewsSmileParams);
+    }
+
+    public void updateNewsCry(int id) {
+        String updateNewsCryQuery = "update emoticon set cry = cry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from news where news_id = ?)";
+        int updateNewsCryParams = id;
+        this.jdbcTemplate.update(updateNewsCryQuery, updateNewsCryParams);
+    }
+
+    public void updateNewsAngry(int id) {
+        String updateNewsAngryQuery = "update emoticon set angry = angry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from news where news_id = ?)";
+        int updateNewsAngryParams = id;
+        this.jdbcTemplate.update(updateNewsAngryQuery, updateNewsAngryParams);
+    }
+
+    public void updateEnNewsSmile(int id) {
+        String updateEnNewsSmileQuery = "update emoticon set smile = smile + 1 where emoticon_id =\n" +
+                "(select emoticon_id from en_news where en_news_id = ?)";
+        int updateEnNewsSmileParams = id;
+        this.jdbcTemplate.update(updateEnNewsSmileQuery, updateEnNewsSmileParams);
+    }
+
+    public void updateEnNewsCry(int id) {
+        String updateEnNewsCryQuery = "update emoticon set cry = cry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from en_news where en_news_id = ?)";
+        int updateEnNewsCryParams = id;
+        this.jdbcTemplate.update(updateEnNewsCryQuery, updateEnNewsCryParams);
+    }
+
+    public void updateEnNewsAngry(int id) {
+        String updateEnNewsAngryQuery = "update emoticon set angry = angry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from en_news where en_news_id = ?)";
+        int updateEnNewsAngryParams = id;
+        this.jdbcTemplate.update(updateEnNewsAngryQuery, updateEnNewsAngryParams);
+    }
+
+    public void updateAudioSmile(int id) {
+        String updateAudioSmileQuery = "update emoticon set smile = smile + 1 where emoticon_id =\n" +
+                "(select emoticon_id from audio where audio_id = ?)";
+        int updateAudioSmileParams = id;
+        this.jdbcTemplate.update(updateAudioSmileQuery, updateAudioSmileParams);
+    }
+
+    public void updateAudioCry(int id) {
+        String updateAudioCryQuery = "update emoticon set cry = cry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from audio where audio_id= ?)";
+        int updateAudioCryParams = id;
+        this.jdbcTemplate.update(updateAudioCryQuery, updateAudioCryParams);
+    }
+
+    public void updateAudioAngry(int id) {
+        String updateAudioAngryQuery = "update emoticon set angry = angry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from audio where audio_id = ?)";
+        int updateAudioAngryParams = id;
+        this.jdbcTemplate.update(updateAudioAngryQuery, updateAudioAngryParams);
+    }
 }

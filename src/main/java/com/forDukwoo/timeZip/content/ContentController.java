@@ -86,4 +86,17 @@ public class ContentController {
         }
     }
 
+    // 이모티콘 등록
+    @ResponseBody
+    @PatchMapping("/emoticon/{category}/{id}/{index}")
+    public BaseResponse<String> addEmoticon (@PathVariable("category") String category, @PathVariable("id") int id,  @PathVariable("index") int index) {
+        try {
+            String result = "이모티콘을 눌렀습니다.";
+            contentProvider.updateEmoticon(category, id, index);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
