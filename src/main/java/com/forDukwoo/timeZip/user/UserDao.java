@@ -2,6 +2,7 @@ package com.forDukwoo.timeZip.user;
 
 import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
+import com.forDukwoo.timeZip.user.model.GetWordRes;
 import com.forDukwoo.timeZip.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -121,5 +122,21 @@ public class UserDao {
                 deleteScrapParams);
     }
 
+    public List<GetWordRes> getWord(long userId, int enNewsId) {
+        String getWordQuery = "select word, meaning1 \n" +
+                "from dictionary \n" +
+                "where user_id=? and en_news_id = ?";
+        Object[] getWordParam = new Object[]{userId, enNewsId};
+        return this.jdbcTemplate.query(getWordQuery,
+                (rs, rowNum) -> new GetWordRes(
+                        rs.getString("word"),
+                        rs.getString("meaning1")
+                ), getWordParam);
+    }
 
+    public int checkEnNewsIdExist(int enNewsId) {
+        String checkEnNewsIdExistQuery = "select exists(select en_news_id from en_news where en_news_id = ?)";
+        int checkEnNewsIdExistParams = enNewsId;
+        return this.jdbcTemplate.queryForObject(checkEnNewsIdExistQuery, int.class, checkEnNewsIdExistParams);
+    }
 }

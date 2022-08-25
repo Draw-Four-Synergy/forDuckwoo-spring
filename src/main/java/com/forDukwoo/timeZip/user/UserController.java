@@ -3,10 +3,7 @@ package com.forDukwoo.timeZip.user;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.config.BaseResponse;
 import com.forDukwoo.timeZip.config.BaseResponseStatus;
-import com.forDukwoo.timeZip.user.model.GetScrapRes;
-import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
-import com.forDukwoo.timeZip.user.model.PostUserReq;
-import com.forDukwoo.timeZip.user.model.PostUserRes;
+import com.forDukwoo.timeZip.user.model.*;
 import com.forDukwoo.timeZip.utils.JwtService;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +110,22 @@ public class UserController {
             userService.deleteScrap(userIdByJwt, scrapId);
             String result = "스크랩을 삭제했습니다.";
             return new BaseResponse<>(result);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 단어 리스트 확인
+    @ResponseBody
+    @GetMapping("/word/{enNewsId}")
+    public BaseResponse<List<GetWordRes>> getWord (@PathVariable("enNewsId") int enNewsId) {
+        try{
+            if (userProvider.checkEnNewsIdExist(enNewsId) == 0) {
+                throw new BaseException(BaseResponseStatus.POSTS_EMPTY_POST_ID);
+            }
+            long userIdByJwt = jwtService.getUserId();
+            List<GetWordRes> getWordRes = userProvider.retrieveWord(userIdByJwt, enNewsId);
+            return new BaseResponse<>(getWordRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
