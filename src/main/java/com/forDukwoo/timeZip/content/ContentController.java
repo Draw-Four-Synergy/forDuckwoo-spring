@@ -72,4 +72,18 @@ public class ContentController {
         }
     }
 
+    // 스크랩 등록
+    @ResponseBody
+    @PostMapping("/scrap/{category}/{id}")
+    public BaseResponse<String> createPosts (@PathVariable("category") String category, @PathVariable("id") int id) {
+        try {
+            int userIdByJwt = (int) jwtService.getUserId();
+            String result = "스크랩 등록에 성공하였습니다.";
+            contentProvider.createScrap(userIdByJwt, category, id);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

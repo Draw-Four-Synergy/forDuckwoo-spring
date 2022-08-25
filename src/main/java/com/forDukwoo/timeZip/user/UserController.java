@@ -110,7 +110,6 @@ public class UserController {
     public BaseResponse<String> deleteUserScrap (@PathVariable("scrapId") int scrapId) {
         try{
             int userIdByJwt = (int) jwtService.getUserId();
-//            DeleteInterestReq deleteInterestReq = new DeleteInterestReq(userIdByJwt);
             userService.deleteScrap(userIdByJwt, scrapId);
             String result = "스크랩을 삭제했습니다.";
             return new BaseResponse<>(result);
