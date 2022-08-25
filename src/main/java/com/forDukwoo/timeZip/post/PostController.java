@@ -28,6 +28,7 @@ public class PostController {
         this.jwtService = jwtService;
     }
 
+    // 게시물 등록
     @ResponseBody
     @PostMapping("")
     public BaseResponse<PostPostRes> createPosts (@RequestBody PostPostReq postPostReq) {
@@ -87,6 +88,29 @@ public class PostController {
             List<GetCommentRes> getComment = postProvider.retrieveComment(communityId);
             return new BaseResponse<>(getComment);
         } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // 댓글 등록
+    @ResponseBody
+    @PostMapping("/comment/{communityId}")
+    public BaseResponse<String> createComment (@PathVariable("communityId") int communityId, @RequestBody PostCommentReq postCommentReq) {
+        try {
+            if(postProvider.checkIdExist(communityId) == 0) {
+                throw new BaseException(POSTS_EMPTY_POST_ID);
+            }
+            int userIdByJwt = (int) jwtService.getUserId();
+            postCommentReq.setUserId(userIdByJwt);
+
+            postCommentReq.setCommunityId(communityId);
+            if (postCommentReq.getComment().length() > 200)
+                return new BaseResponse<>(BaseResponseStatus.POST_INPUT_FAILED_CONTENTS);
+            //String 으로 받자
+            postService.createComment(postCommentReq);
+            String result = "등록을 성공했습니다.";
+            return new BaseResponse<>(result);
+        }catch(BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }
     }
