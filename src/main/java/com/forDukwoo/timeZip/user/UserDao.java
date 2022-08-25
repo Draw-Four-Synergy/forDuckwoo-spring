@@ -1,9 +1,6 @@
 package com.forDukwoo.timeZip.user;
 
-import com.forDukwoo.timeZip.user.model.GetScrapRes;
-import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
-import com.forDukwoo.timeZip.user.model.GetWordRes;
-import com.forDukwoo.timeZip.user.model.PostUserReq;
+import com.forDukwoo.timeZip.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -138,5 +135,16 @@ public class UserDao {
         String checkEnNewsIdExistQuery = "select exists(select en_news_id from en_news where en_news_id = ?)";
         int checkEnNewsIdExistParams = enNewsId;
         return this.jdbcTemplate.queryForObject(checkEnNewsIdExistQuery, int.class, checkEnNewsIdExistParams);
+    }
+
+    public List<GetBadgeRes> getBadge(int userId) {
+        String getBadgeQuery = "select badge from badge, user_badge\n" +
+                "where badge.badge_id = user_badge.badge_id\n" +
+                "and user_id = ?";
+        int getBadgeParam = userId;
+        return this.jdbcTemplate.query(getBadgeQuery,
+                (rs, rowNum) -> new GetBadgeRes(
+                        rs.getString("badge")
+                ), getBadgeParam);
     }
 }

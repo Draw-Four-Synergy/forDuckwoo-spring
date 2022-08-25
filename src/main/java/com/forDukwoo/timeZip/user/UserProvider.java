@@ -1,6 +1,7 @@
 package com.forDukwoo.timeZip.user;
 
 import com.forDukwoo.timeZip.config.BaseException;
+import com.forDukwoo.timeZip.user.model.GetBadgeRes;
 import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
 import com.forDukwoo.timeZip.user.model.GetWordRes;
@@ -102,6 +103,14 @@ public class UserProvider {
     public int checkEnNewsIdExist(int enNewsId) throws BaseException{
         try {
             return userDao.checkEnNewsIdExist(enNewsId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetBadgeRes> retrieveBadge(int userId) throws BaseException{
+        try {
+            return userDao.getBadge(userId);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

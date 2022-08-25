@@ -130,4 +130,17 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    // 단어 리스트 확인
+    @ResponseBody
+    @GetMapping("/badge")
+    public BaseResponse<List<GetBadgeRes>> getBadge () {
+        try{
+            int userIdByJwt = (int) jwtService.getUserId();
+            List<GetBadgeRes> getBadgeRes = userProvider.retrieveBadge(userIdByJwt);
+            return new BaseResponse<>(getBadgeRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
