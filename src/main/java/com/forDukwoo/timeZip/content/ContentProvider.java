@@ -3,6 +3,7 @@ package com.forDukwoo.timeZip.content;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.content.model.GetContentDetailRes;
 import com.forDukwoo.timeZip.content.model.GetContentRes;
+import com.forDukwoo.timeZip.content.model.GetEmoticonRes;
 import com.forDukwoo.timeZip.user.UserDao;
 import com.forDukwoo.timeZip.user.model.GetScrapRes;
 import org.slf4j.Logger;
@@ -126,6 +127,78 @@ public class ContentProvider {
             else if (category.equals("audio")) {
                 contentDao.createScrapAudio(userId, id);
                 return;
+            }
+            throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void updateEmoticon(String category, int id, int index) throws BaseException {
+        try {
+            if(category.equals("news")) {
+                switch (index) {
+                    case 0:
+                        contentDao.updateNewsSmile(id);
+                        break;
+                    case 1:
+                        contentDao.updateNewsCry(id);
+                        break;
+                    case 2:
+                        contentDao.updateNewsAngry(id);
+                        break;
+                }
+                return;
+            }
+            else if(category.equals("en_news")) {
+                switch (index) {
+                    case 0:
+                        contentDao.updateEnNewsSmile(id);
+                        break;
+                    case 1:
+                        contentDao.updateEnNewsCry(id);
+                        break;
+                    case 2:
+                        contentDao.updateEnNewsAngry(id);
+                        break;
+                }
+                return;
+            }
+            else if(category.equals("audio")) {
+                switch (index) {
+                    case 0:
+                        contentDao.updateAudioSmile(id);
+                        break;
+                    case 1:
+                        contentDao.updateAudioCry(id);
+                        break;
+                    case 2:
+                        contentDao.updateAudioAngry(id);
+                        break;
+                }
+                return;
+            }
+            throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public GetEmoticonRes retrieveEmoticon(String category, int id) throws BaseException{
+        try {
+            if(category.equals("news")) {
+                GetEmoticonRes getEmoticonRes  = contentDao.getNewsEmoticon(id);
+                return getEmoticonRes;
+            }
+            else if(category.equals("en_news")) {
+                GetEmoticonRes getEmoticonRes  = contentDao.getEnNewsEmoticon(id);
+                return getEmoticonRes;
+            }
+            else if (category.equals("audio")) {
+                GetEmoticonRes getEmoticonRes  = contentDao.getAudioEmoticon(id);
+                return getEmoticonRes;
             }
             throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
         } catch (Exception exception) {

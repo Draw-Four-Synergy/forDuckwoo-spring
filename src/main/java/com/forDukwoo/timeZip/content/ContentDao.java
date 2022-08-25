@@ -2,6 +2,7 @@ package com.forDukwoo.timeZip.content;
 
 import com.forDukwoo.timeZip.content.model.GetContentDetailRes;
 import com.forDukwoo.timeZip.content.model.GetContentRes;
+import com.forDukwoo.timeZip.content.model.GetEmoticonRes;
 import com.forDukwoo.timeZip.user.model.GetUserInfoRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -173,5 +174,110 @@ public class ContentDao {
         String createScrapNewsQuery = "insert into scrap (user_id, audio_id) values (?, ?)";
         Object[] createScrapNewsParams = new Object[]{userId, audio_id};
         this.jdbcTemplate.update(createScrapNewsQuery, createScrapNewsParams);
+    }
+
+    public void updateNewsSmile(int id) {
+        String updateNewsSmileQuery = "update emoticon set smile = smile + 1 where emoticon_id =\n" +
+                "(select emoticon_id from news where news_id = ?)";
+        int updateNewsSmileParams = id;
+        this.jdbcTemplate.update(updateNewsSmileQuery, updateNewsSmileParams);
+    }
+
+    public void updateNewsCry(int id) {
+        String updateNewsCryQuery = "update emoticon set cry = cry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from news where news_id = ?)";
+        int updateNewsCryParams = id;
+        this.jdbcTemplate.update(updateNewsCryQuery, updateNewsCryParams);
+    }
+
+    public void updateNewsAngry(int id) {
+        String updateNewsAngryQuery = "update emoticon set angry = angry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from news where news_id = ?)";
+        int updateNewsAngryParams = id;
+        this.jdbcTemplate.update(updateNewsAngryQuery, updateNewsAngryParams);
+    }
+
+    public void updateEnNewsSmile(int id) {
+        String updateEnNewsSmileQuery = "update emoticon set smile = smile + 1 where emoticon_id =\n" +
+                "(select emoticon_id from en_news where en_news_id = ?)";
+        int updateEnNewsSmileParams = id;
+        this.jdbcTemplate.update(updateEnNewsSmileQuery, updateEnNewsSmileParams);
+    }
+
+    public void updateEnNewsCry(int id) {
+        String updateEnNewsCryQuery = "update emoticon set cry = cry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from en_news where en_news_id = ?)";
+        int updateEnNewsCryParams = id;
+        this.jdbcTemplate.update(updateEnNewsCryQuery, updateEnNewsCryParams);
+    }
+
+    public void updateEnNewsAngry(int id) {
+        String updateEnNewsAngryQuery = "update emoticon set angry = angry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from en_news where en_news_id = ?)";
+        int updateEnNewsAngryParams = id;
+        this.jdbcTemplate.update(updateEnNewsAngryQuery, updateEnNewsAngryParams);
+    }
+
+    public void updateAudioSmile(int id) {
+        String updateAudioSmileQuery = "update emoticon set smile = smile + 1 where emoticon_id =\n" +
+                "(select emoticon_id from audio where audio_id = ?)";
+        int updateAudioSmileParams = id;
+        this.jdbcTemplate.update(updateAudioSmileQuery, updateAudioSmileParams);
+    }
+
+    public void updateAudioCry(int id) {
+        String updateAudioCryQuery = "update emoticon set cry = cry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from audio where audio_id= ?)";
+        int updateAudioCryParams = id;
+        this.jdbcTemplate.update(updateAudioCryQuery, updateAudioCryParams);
+    }
+
+    public void updateAudioAngry(int id) {
+        String updateAudioAngryQuery = "update emoticon set angry = angry + 1 where emoticon_id =\n" +
+                "(select emoticon_id from audio where audio_id = ?)";
+        int updateAudioAngryParams = id;
+        this.jdbcTemplate.update(updateAudioAngryQuery, updateAudioAngryParams);
+    }
+
+    public GetEmoticonRes getNewsEmoticon(int id) {
+        String GetEmoticonResQuery = "select smile, cry, angry\n" +
+                "from emoticon, news\n" +
+                "where news.emoticon_id = emoticon.emoticon_id\n" +
+                "and news_id = ?";
+        long GetEmoticonResParam = id;
+        return this.jdbcTemplate.queryForObject(GetEmoticonResQuery,
+                (rs, rowNum) -> new GetEmoticonRes(
+                        rs.getInt("smile"),
+                        rs.getInt("cry"),
+                        rs.getInt("angry")
+                ), GetEmoticonResParam);
+    }
+
+    public GetEmoticonRes getEnNewsEmoticon(int id) {
+        String getEnNewsEmoticonQuery = "select smile, cry, angry\n" +
+                "from emoticon, en_news\n" +
+                "where en_news.emoticon_id = emoticon.emoticon_id\n" +
+                "and en_news_id = ?";
+        long getEnNewsEmoticonParam = id;
+        return this.jdbcTemplate.queryForObject(getEnNewsEmoticonQuery,
+                (rs, rowNum) -> new GetEmoticonRes(
+                        rs.getInt("smile"),
+                        rs.getInt("cry"),
+                        rs.getInt("angry")
+                ), getEnNewsEmoticonParam);
+    }
+
+    public GetEmoticonRes getAudioEmoticon(int id) {
+        String getAudioEmoticonQuery = "select smile, cry, angry\n" +
+                "from emoticon, audio\n" +
+                "where audio.emoticon_id = emoticon.emoticon_id\n" +
+                "and audio_id = ?";
+        long getAudioEmoticonParam = id;
+        return this.jdbcTemplate.queryForObject(getAudioEmoticonQuery,
+                (rs, rowNum) -> new GetEmoticonRes(
+                        rs.getInt("smile"),
+                        rs.getInt("cry"),
+                        rs.getInt("angry")
+                ), getAudioEmoticonParam);
     }
 }

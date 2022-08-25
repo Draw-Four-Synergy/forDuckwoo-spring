@@ -5,6 +5,7 @@ import com.forDukwoo.timeZip.config.BaseResponse;
 import com.forDukwoo.timeZip.config.BaseResponseStatus;
 import com.forDukwoo.timeZip.content.model.GetContentDetailRes;
 import com.forDukwoo.timeZip.content.model.GetContentRes;
+import com.forDukwoo.timeZip.content.model.GetEmoticonRes;
 import com.forDukwoo.timeZip.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -83,6 +84,31 @@ public class ContentController {
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 이모티콘 등록
+    @ResponseBody
+    @PatchMapping("/emoticon/{category}/{id}/{index}")
+    public BaseResponse<String> addEmoticon (@PathVariable("category") String category, @PathVariable("id") int id,  @PathVariable("index") int index) {
+        try {
+            String result = "이모티콘을 눌렀습니다.";
+            contentProvider.updateEmoticon(category, id, index);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    // 이모티콘 개수 반환
+    @ResponseBody
+    @GetMapping("/emoticon/{category}/{id}")
+    public BaseResponse<GetEmoticonRes> getEmoticon (@PathVariable ("category") String category, @PathVariable("id") int id) throws BaseException {
+        try {
+            GetEmoticonRes getEmoticonRes = contentProvider.retrieveEmoticon(category, id);
+            return new BaseResponse<>(getEmoticonRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
         }
     }
 
