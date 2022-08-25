@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetWordRes {
+    int dictionaryId;
     String word;
     String meaning1;
     String meaning2;

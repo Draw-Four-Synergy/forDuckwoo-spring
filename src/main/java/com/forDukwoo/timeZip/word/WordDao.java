@@ -19,13 +19,14 @@ public class WordDao {
     }
 
     public List<GetWordRes> selectWord(int userId) {
-        String selectWordQuery = "select word, meaning1, meaning2\n" +
+        String selectWordQuery = "select dictionary_id as dictionaryId, word, meaning1, meaning2\n" +
                 "from dictionary\n" +
                 "where user_id = ?";
         int selectWordParam = userId;
 
         return this.jdbcTemplate.query(selectWordQuery,
                 (rs, rowNum) -> new GetWordRes(
+                        rs.getInt("dictionaryId"),
                         rs.getString("word"),
                         rs.getString("meaning1"),
                         rs.getString("meaning1")
