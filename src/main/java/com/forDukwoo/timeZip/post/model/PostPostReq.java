@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostPostReq {
     int userId;
-    String title;
     String content;
     int hashtag;
 
