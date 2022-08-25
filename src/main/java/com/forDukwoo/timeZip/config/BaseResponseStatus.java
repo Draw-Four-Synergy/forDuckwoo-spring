@@ -33,7 +33,7 @@ public enum BaseResponseStatus {
     USERS_DUPLICATED_ID(false, 2061, "중복된 아이디입니다."),
     USERS_DUPLICATED_NICK(false, 2062, "중복된 닉네임입니다."),
     EMPTY_SCRAP(false, 2063, "해당 유저가 등록하지 않은 스크랩입니다."),
-
+    EMPTY_WORD(false, 2064, "해당 유저가 등록하지 않은 단어 id 입니다."),
 
     // posts
     POSTS_EMPTY_CATEGORY_ID(false, 2012, "카테고리 값을 확인해주세요."),

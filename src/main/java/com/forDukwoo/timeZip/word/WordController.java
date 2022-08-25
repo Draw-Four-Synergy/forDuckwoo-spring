@@ -19,11 +19,14 @@ public class WordController {
     private final WordDao wordDao;
     @Autowired
     private final JwtService jwtService;
+    @Autowired
+    private final WordService wordService;
 
-    public WordController(WordProvider wordProvider, WordDao wordDao, JwtService jwtService) {
+    public WordController(WordProvider wordProvider, WordDao wordDao, JwtService jwtService, WordService wordService) {
         this.jwtService = jwtService;
         this.wordDao = wordDao;
         this.wordProvider = wordProvider;
+        this.wordService = wordService;
     }
 
     // 단어장 조회
@@ -34,6 +37,21 @@ public class WordController {
             int userIdByJwt = (int) jwtService.getUserId();
             List<GetWordRes> getWordRes = wordProvider.retrieveWord(userIdByJwt);
             return new BaseResponse<>(getWordRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
+    // 단어 삭제
+    @ResponseBody
+    @DeleteMapping("/{dictionaryId}")
+    public BaseResponse<String> deleteUserScrap (@PathVariable("dictionaryId") int dictionaryId) {
+        try{
+            int userIdByJwt = (int) jwtService.getUserId();
+            wordService.deleteWord(userIdByJwt, dictionaryId);
+            String result = "단어를 삭제했습니다.";
+            return new BaseResponse<>(result);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

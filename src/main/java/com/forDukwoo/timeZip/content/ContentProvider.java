@@ -113,4 +113,24 @@ public class ContentProvider {
     }
 
 
+    public void createScrap(int userId, String category, int id) throws BaseException{
+        try {
+            if(category.equals("news")) {
+                contentDao.createScrapNews(userId, id);
+                return;
+            }
+            else if(category.equals("en_news")) {
+                contentDao.createScrapEnNews(userId, id);
+                return;
+            }
+            else if (category.equals("audio")) {
+                contentDao.createScrapAudio(userId, id);
+                return;
+            }
+            throw new BaseException(POSTS_EMPTY_CATEGORY_ID);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

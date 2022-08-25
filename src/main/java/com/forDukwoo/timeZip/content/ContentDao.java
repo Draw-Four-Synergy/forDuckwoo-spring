@@ -156,4 +156,22 @@ public class ContentDao {
                 int.class,
                 checkAudioIdExistParams);
     }
+
+    public void createScrapNews(int userId, int news_id) {
+        String createScrapNewsQuery = "insert into scrap (user_id, news_id) values (?, ?)";
+        Object[] createScrapNewsParams = new Object[]{userId, news_id};
+        this.jdbcTemplate.update(createScrapNewsQuery, createScrapNewsParams);
+    }
+
+    public void createScrapEnNews(int userId, int en_news_id) {
+        String createScrapNewsQuery = "insert into scrap (user_id, en_news_id) values (?, ?)";
+        Object[] createScrapNewsParams = new Object[]{userId, en_news_id};
+        this.jdbcTemplate.update(createScrapNewsQuery, createScrapNewsParams);
+    }
+
+    public void createScrapAudio(int userId, int audio_id) {
+        String createScrapNewsQuery = "insert into scrap (user_id, audio_id) values (?, ?)";
+        Object[] createScrapNewsParams = new Object[]{userId, audio_id};
+        this.jdbcTemplate.update(createScrapNewsQuery, createScrapNewsParams);
+    }
 }

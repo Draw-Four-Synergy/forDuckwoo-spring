@@ -37,4 +37,20 @@ public class WordProvider {
 
     }
 
+    public int checkDictionaryIdExist(int dictionaryId) throws BaseException {
+        try {
+            return wordDao.checkDictionaryIdExist(dictionaryId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+    public int checkDuplicateWord(int dictionaryId, int userId) throws BaseException {
+        try {
+            return wordDao.checkDuplicateWord(dictionaryId, userId);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
