@@ -1,5 +1,7 @@
 package com.forDukwoo.timeZip.post;
 
+import com.forDukwoo.timeZip.content.model.GetContentRes;
+import com.forDukwoo.timeZip.post.model.GetCommentRes;
 import com.forDukwoo.timeZip.post.model.GetPostDetailRes;
 import com.forDukwoo.timeZip.post.model.GetPostRes;
 import com.forDukwoo.timeZip.post.model.PostPostReq;
@@ -77,5 +79,21 @@ public class PostDao {
                 int.class,
                 checkCommunityIdExistParams);
 
+    }
+
+    public List<GetCommentRes> selectComment(int communityId) {
+        String selectCommentQuery = "\n" +
+                "select photo, nick, comment\n" +
+                "from comment, user\n" +
+                "where comment.user_id = user.user_id\n" +
+                "and community_id = ?;";
+        int selectCommentParam = communityId;
+
+        return this.jdbcTemplate.query(selectCommentQuery,
+                (rs, rowNum) -> new GetCommentRes(
+                        rs.getString("photo"),
+                        rs.getString("nick"),
+                        rs.getString("comment")
+                ),selectCommentParam);
     }
 }

@@ -2,6 +2,7 @@ package com.forDukwoo.timeZip.post;
 
 import com.forDukwoo.timeZip.TimeZipApplication;
 import com.forDukwoo.timeZip.config.BaseException;
+import com.forDukwoo.timeZip.post.model.GetCommentRes;
 import com.forDukwoo.timeZip.post.model.GetPostDetailRes;
 import com.forDukwoo.timeZip.post.model.GetPostRes;
 import org.slf4j.Logger;
@@ -56,4 +57,14 @@ public class PostProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<GetCommentRes> retrieveComment(int communityId) throws BaseException {
+        try {
+            List<GetCommentRes> getCommentRes = postDao.selectComment(communityId);
+            return getCommentRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
