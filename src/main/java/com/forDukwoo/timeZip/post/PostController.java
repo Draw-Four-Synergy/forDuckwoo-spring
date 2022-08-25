@@ -3,10 +3,7 @@ package com.forDukwoo.timeZip.post;
 import com.forDukwoo.timeZip.config.BaseException;
 import com.forDukwoo.timeZip.config.BaseResponse;
 import com.forDukwoo.timeZip.config.BaseResponseStatus;
-import com.forDukwoo.timeZip.post.model.GetPostDetailRes;
-import com.forDukwoo.timeZip.post.model.GetPostRes;
-import com.forDukwoo.timeZip.post.model.PostPostReq;
-import com.forDukwoo.timeZip.post.model.PostPostRes;
+import com.forDukwoo.timeZip.post.model.*;
 import com.forDukwoo.timeZip.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -74,6 +71,21 @@ public class PostController {
             }
             GetPostDetailRes getPostDetailRes = postProvider.retrievePostDetails(communityId);
             return new BaseResponse<>(getPostDetailRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    // 댓글 조회
+    @ResponseBody
+    @GetMapping("/comment/{communityId}")
+    public BaseResponse<List<GetCommentRes>> getComment (@PathVariable("communityId") int communityId) {
+        try {
+            if (postProvider.checkIdExist(communityId) == 0) {
+                throw new BaseException(POSTS_EMPTY_POST_ID);
+            }
+            List<GetCommentRes> getComment = postProvider.retrieveComment(communityId);
+            return new BaseResponse<>(getComment);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         }
