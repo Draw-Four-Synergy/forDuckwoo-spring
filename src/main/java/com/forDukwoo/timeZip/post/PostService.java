@@ -1,6 +1,7 @@
 package com.forDukwoo.timeZip.post;
 
 import com.forDukwoo.timeZip.config.BaseException;
+import com.forDukwoo.timeZip.post.model.PostCommentReq;
 import com.forDukwoo.timeZip.post.model.PostPostReq;
 import com.forDukwoo.timeZip.post.model.PostPostRes;
 import org.slf4j.Logger;
@@ -25,6 +26,15 @@ public class PostService {
         try {
             int id = postDao.insertPosts(postPostReq);
             return new PostPostRes(id);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void createComment(PostCommentReq postCommentReq) throws BaseException{
+        try {
+            postDao.insertComment(postCommentReq);
         } catch (Exception exception) {
             exception.printStackTrace();
             throw new BaseException(DATABASE_ERROR);

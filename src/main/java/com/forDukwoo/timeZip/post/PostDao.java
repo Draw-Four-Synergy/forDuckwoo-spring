@@ -1,10 +1,7 @@
 package com.forDukwoo.timeZip.post;
 
 import com.forDukwoo.timeZip.content.model.GetContentRes;
-import com.forDukwoo.timeZip.post.model.GetCommentRes;
-import com.forDukwoo.timeZip.post.model.GetPostDetailRes;
-import com.forDukwoo.timeZip.post.model.GetPostRes;
-import com.forDukwoo.timeZip.post.model.PostPostReq;
+import com.forDukwoo.timeZip.post.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -31,7 +28,7 @@ public class PostDao {
     }
 
     public List<GetPostRes> selectPosts() {
-        String selectPostsQuery = "select community_id, photo, nick, left(content, 20) from community, user\n" +
+        String selectPostsQuery = "select community_id, photo, nick, left(content, 20) as content from community, user\n" +
                 "where user.user_id = community.user_id\n" +
                 "order by community_id desc";
 
@@ -45,7 +42,7 @@ public class PostDao {
     }
 
     public List<GetPostRes> selectPostsHashtag(int hashtag) {
-        String selectPostsQuery = "select community_id, photo, nick, left(content, 20) from community, user\n" +
+        String selectPostsQuery = "select community_id, photo, nick, left(content, 20) as content from community, user\n" +
                 "where user.user_id = community.user_id and hashtag = ?\n" +
                 "order by community_id desc;";
         int selectPostsParam = hashtag;
@@ -95,5 +92,12 @@ public class PostDao {
                         rs.getString("nick"),
                         rs.getString("comment")
                 ),selectCommentParam);
+    }
+
+    public void insertComment(PostCommentReq postCommentReq) {
+        String insertCommentQuery = "insert into comment\n" +
+                "(comment, user_id, community_id) VALUES (?, ?, ?)";
+        Object[] insertCommentParams = new Object[]{postCommentReq.getComment(), postCommentReq.getUserId(), postCommentReq.getCommunityId()};
+        this.jdbcTemplate.update(insertCommentQuery, insertCommentParams);
     }
 }
