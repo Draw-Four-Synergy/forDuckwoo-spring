@@ -28,7 +28,7 @@ public class WordDao {
                         rs.getInt("dictionaryId"),
                         rs.getString("word"),
                         rs.getString("meaning1"),
-                        rs.getString("meaning1")
+                        rs.getString("meaning2")
                 ), selectWordParam);
     }
 
